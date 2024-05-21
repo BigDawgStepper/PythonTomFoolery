@@ -50,11 +50,21 @@ def restart_computer():
 def open_settings():
     time.sleep(0.3)
     os.system("start ms-settings:")
-    ctypes.windll.user32.MessageBoxW(0, "Settings is Running", "Multi Tool")
+    ctypes.windll.user32.MessageBoxW(0, "Settings is Open", "Multi Tool")
+    
+def open_virus_settings():
+    time.sleep(0.3)
+    os.system("start windowsdefender:")
+    ctypes.windll.user32.MessageBoxW(0, "Virus Settings is Open", "Multi Tool")
+    
+def open_regedit():
+    time.sleep(0.3)
+    os.system("start regedit")
+    ctypes.windll.user32.MessageBoxW(0, "Registry Editor is Running", "Multi Tool")
     
 app = tk.Tk()
 app.title("BigDawgSteppers Win MultiTool but GUI")
-app.geometry('500x500')
+app.geometry('600x600')
 app.resizable(False, False)
 label_frame = tk.LabelFrame(app, text="Tools")
 label_frame.pack(padx=80, pady=110)
@@ -67,6 +77,8 @@ button5 = tk.Button(label_frame, text="File Explorer", width=17, bg='green', com
 button6 = tk.Button(label_frame, text="Calculator", width=17, bg='green', command=open_calculator).pack()
 button7 = tk.Button(label_frame, text="System Restart", width=17, bg='green', command=restart_computer).pack()
 button8 = tk.Button(label_frame, text="Windows Settings", width=17, bg='green', command=open_settings).pack()
+button9 = tk.Button(label_frame, text="Virus Settings", width=17, bg='green', command=open_virus_settings).pack()
+button10 = tk.Button(label_frame, text="Registry Edit", width=17, bg='green', command=open_regedit).pack()
 button = tk.Button(label_frame, text="Quit", width=17, bg='red', command=quit_button).pack()
 
 app.mainloop()
