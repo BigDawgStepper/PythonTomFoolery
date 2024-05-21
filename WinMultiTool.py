@@ -12,7 +12,13 @@ def open_task_manager():
 
 def multiple_choice():
     print("Make the choice of which tool ur tryna use")
-    input("1.Open Task Manager:")
+    print("1. Open Task Manager")
+    print("2. Open cmd")
+    print("3. Open System Info")
+    print("4. Work in progress")
+    print("5. Work in progress")
+if choice == 1:
+    print("Opening Task Manager.")
     
 if __name__ == "__main__":
     multiple_choice()
