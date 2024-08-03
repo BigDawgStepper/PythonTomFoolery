@@ -6,9 +6,29 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.messagebox
 
-def generator(length=12):
+def generator12(length=12):
     if length < 12:
         raise ValueError("Password length should be at least 12 characters")
+
+    uppercase = string.ascii_uppercase
+    lowercase = string.ascii_lowercase
+    digits = string.digits
+    special_chars = string.punctuation
+
+    password = [
+        random.choice(uppercase),
+        random.choice(special_chars),
+    ]
+
+    all_characters = lowercase + digits + uppercase + special_chars
+    password += random.choices(all_characters, k=length - 2)
+    random.shuffle(password)
+    tkinter.messagebox.showinfo(title="Your PW succesfully generated!", message=password)
+    return ''.join(password)
+
+def generator8(length=8):
+    if length < 8:
+        raise ValueError("Password length should be at least 8 characters")
 
     uppercase = string.ascii_uppercase
     lowercase = string.ascii_lowercase
@@ -69,7 +89,8 @@ Label(my_tab2, text="You should check out some of these links here").pack()
 Label(my_tab2, text="They have more info on me and my other projects").pack()
 
 # Tab 1 Buttons
-Button(my_tab1, text="Generate", command=generator).pack()
+Button(my_tab1, text="Generate 12 Character PW with uppercase and special char", command=generator12).pack()
+Button(my_tab1, text="Generate 8 Character PW with uppercase and special char", command=generator8).pack()
 
 # Tab 2 Buttons
 Button(my_tab2, text="My Github", command=Github).pack()
