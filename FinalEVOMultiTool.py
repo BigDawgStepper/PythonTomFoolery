@@ -179,6 +179,70 @@ options = [
     "8 Char with uppercase, and special chars",
 ]
 
+times = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+        '21',
+        '22',
+        '23',
+        '24',
+        '25',
+        '26',
+        '27',
+        '28',
+        '29',
+        '30',
+        '31',
+        '32',
+        '33',
+        '34',
+        '35',
+        '36',
+        '37',
+        '38',
+        '39',
+        '40',
+        '41',
+        '42',
+        '43',
+        '44',
+        '45',
+        '46',
+        '47',
+        '48',
+        '49',
+        '50',
+        '51',
+        '52',
+        '53',
+        '54',
+        '55',
+        '56',
+        '57',
+        '58',
+        '59',
+        '60',
+    ]
+
 def generate_password():
     # Get the selected option from the dropdown
     selected_option = selected.get()
@@ -215,14 +279,22 @@ def dontclick():
 # Setting all the default GUI settings
 root = tk.Tk()
 root.title("Eac's Multi Tool for Windows")
-root.geometry("505x365")
+root.geometry("505x380")
 root.resizable(False, False)
 root.iconbitmap('C:\\Users\\eac\\Desktop\\Big hacker things\\icons\\multi-tool.ico')
 
 # Variables
 selected = StringVar()
-selected.set(options[16])  # Set the default value for the dropdown
+selected.set(options[16])
 play = lambda: PlaySound('C:\\Users\\eac\\Downloads\\danger-alarm-sound-effect.wav', SND_FILENAME)
+IntervalMenu = IntVar()
+IntervalMenu.set(times[0])
+IntervalMenu1 = IntVar()
+IntervalMenu1.set(times[0])
+IntervalMenu2 = IntVar()
+IntervalMenu2.set(times[0])
+IntervalMenu3 = IntVar()
+IntervalMenu3.set(times[0])
 
 # Creating the notebook
 my_notebook = ttk.Notebook(root)
@@ -233,6 +305,8 @@ my_tab1 = ttk.Frame(my_notebook)
 my_notebook.add(my_tab1, text="Tools/PW Gen")
 my_tab2 = ttk.Frame(my_notebook)
 my_notebook.add(my_tab2, text="HWID Checker")
+my_tab4 = ttk.Frame(my_notebook)
+my_notebook.add(my_tab4, text="Auto Clicker")
 my_tab3 = ttk.Frame(my_notebook)
 my_notebook.add(my_tab3, text="Credits")
 
@@ -249,9 +323,25 @@ frame3 = LabelFrame(my_tab2, text="HWID Checker", width=500, height=360, padx=15
 frame3.grid_propagate(False)
 frame3.grid(row=0, column=0, sticky='w')
 
-frame4 = LabelFrame(my_tab3, text="Credits", width=500, height=360, padx=15, pady=15)
+frame4 = LabelFrame(my_tab4, text="Click Interval", width=500, height=100, padx=10)
 frame4.grid_propagate(False)
 frame4.grid(row=0, column=0, sticky='w')
+
+frame5 = LabelFrame(my_tab3, text="Credits", width=500, height=360, padx=15, pady=15)
+frame5.grid_propagate(False)
+frame5.grid(row=0, column=0, sticky='w')
+
+frame6 = LabelFrame(my_tab4, text="Click options", width=240, height=150,)
+frame6.grid_propagate(False)
+frame6.grid(row=1, column=0, sticky='w')
+
+frame7 = LabelFrame(my_tab4, text="Click repeat", width=240, height=150,)
+frame7.grid_propagate(False)
+frame7.grid(row=1, column=0, padx=260, sticky='ew')
+
+frame8 = LabelFrame(my_tab4, text="Settings", width=500, height=105)
+frame8.grid_propagate(False)
+frame8.grid(row=2, column=0, sticky='w')
 
 # Creating the Labels
 Label1 = ttk.Label(frame1, text="Just press a button!", font='Helvetica 14 bold')
@@ -270,14 +360,26 @@ Label4.grid(row=2, column=0, columnspan=3, sticky='w')
 Label5 = ttk.Label(frame3, text="Choose one of the button options and the result should print in the box!", font='Helvetica 10 bold')
 Label5.grid(row=0, column=0)
 
-Label6 = ttk.Label(frame4, text="This program was made by eac/thebigdawgstepper yes its only 1 person")
+Label6 = ttk.Label(frame5, text="This program was made by eac/thebigdawgstepper yes its only 1 person")
 Label6.grid(row=0, column=0, sticky='w')
 
-Label7 = ttk.Label(frame4, text="Its a pretty small program but i hope its useful, enjoy the tool!")
+Label7 = ttk.Label(frame5, text="Its a pretty small program but i hope its useful, enjoy the tool!")
 Label7.grid(row=1, column=0, sticky='w')
 
-Label8 = ttk.Label(frame4, text="Please dont click the button once you do your in it for 10 seconds")
+Label8 = ttk.Label(frame5, text="Please dont click the button once you do your in it for 10 seconds")
 Label8.grid(row=2, column=0, sticky='w')
+
+Label9 = ttk.Label(frame4, text="Hours", font='Helvetica 12 bold')
+Label9.grid(row=0, column=0, padx=60, sticky='w')
+
+Label10 = ttk.Label(frame4, text="Minutes", font='Helvetica 12 bold')
+Label10.grid(row=1, column=0, padx=60, sticky='w')
+
+Label11 = ttk.Label(frame4, text="Seconds", font='Helvetica 12 bold')
+Label11.grid(row=0, column=1, padx=60)
+
+Label12 = ttk.Label(frame4, text="Millisecs", font='Helvetica 12 bold')
+Label12.grid(row=1, column=1, padx=60)
 
 # Creating the Buttons
 Button1 = Button(frame1, text="Task Mgr", padx=5, pady=5, width=8, height=1, command=taskmgr)
@@ -331,7 +433,7 @@ Button16.grid(row=1, column=0, columnspan=1, padx=5, pady=3, sticky='w')
 Button17 = Button(frame3, text="Get HWID", width=8, height=1, command=show_gpu_serial_number)
 Button17.grid(row=2, column=0, columnspan=1, padx=5, pady=3, sticky='w')
 
-Button18 = Button(frame4, text="DONT CLICK ME!!!", command=dontclick)
+Button18 = Button(frame5, text="DONT CLICK ME!!!", command=dontclick)
 Button18.grid(row=3, column=3, sticky='w')
 
 generate_pw_button = Button(frame2, text="Generate PW", padx=5, pady=5, width=8, height=1, command=generate_password)
@@ -348,6 +450,18 @@ text_box2.grid(row=4, column=0, pady=15)
 drop = OptionMenu(frame2, selected, *options)
 drop.grid(columnspan=3, sticky='nesw')
 
+drop1 = OptionMenu(frame4, IntervalMenu, *times)
+drop1.grid(row=0, column=0, sticky='w')
+
+drop2 = OptionMenu(frame4, IntervalMenu1, *times)
+drop2.grid(row=1, column=0, sticky='w')
+
+drop3 = OptionMenu(frame4, IntervalMenu2, *times)
+drop3.grid(row=0, column=1, sticky='w')
+
+drop4 = OptionMenu(frame4, IntervalMenu3, *times)
+drop4.grid(row=1, column=1, sticky='w')
+
 frame1.grid_columnconfigure(0, weight=1)
 frame1.grid_columnconfigure(1, weight=1)
 frame1.grid_columnconfigure(2, weight=1)
@@ -356,5 +470,10 @@ frame3.grid_columnconfigure(0, weight=1)
 frame3.grid_columnconfigure(1, weight=1)
 frame3.grid_columnconfigure(2, weight=1)
 frame3.grid_columnconfigure(3, weight=1)
+frame4.grid_rowconfigure(0, weight=1)
+frame4.grid_columnconfigure(0, weight=1)
+frame4.grid_columnconfigure(1, weight=1)
+frame4.grid_columnconfigure(2, weight=1)
+frame4.grid_columnconfigure(3, weight=1)
 
 root.mainloop()
