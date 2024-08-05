@@ -243,6 +243,18 @@ times = [
         '60',
     ]
 
+Clickops = [
+        'Left',
+        'Right',
+        
+    ]
+
+Clickops1 = [
+        'Single',
+        'Double',
+        
+    ]
+
 def generate_password():
     # Get the selected option from the dropdown
     selected_option = selected.get()
@@ -276,6 +288,15 @@ def dontclick():
     PlaySound('C:\\Users\\eac\\Downloads\\danger-alarm-sound-effect.wav', SND_FILENAME)
     tkinter.messagebox.showinfo(title="Told you not to", message="You had multiple chances to not click it and u still did smh")
 
+def StartClicker():
+    return 0
+
+def StopClicker():
+    return 0
+
+def Hotkeys():
+    return 0
+
 # Setting all the default GUI settings
 root = tk.Tk()
 root.title("Eac's Multi Tool for Windows")
@@ -295,6 +316,12 @@ IntervalMenu2 = IntVar()
 IntervalMenu2.set(times[0])
 IntervalMenu3 = IntVar()
 IntervalMenu3.set(times[0])
+ClickMenu = StringVar()
+ClickMenu.set(Clickops[1])
+ClickType = StringVar()
+ClickType.set(Clickops1[0])
+RepeatOps = IntVar()
+RepeatOps.set([2])
 
 # Creating the notebook
 my_notebook = ttk.Notebook(root)
@@ -381,6 +408,12 @@ Label11.grid(row=0, column=1, padx=60)
 Label12 = ttk.Label(frame4, text="Millisecs", font='Helvetica 12 bold')
 Label12.grid(row=1, column=1, padx=60)
 
+Label13 = ttk.Label(frame6, text="Mouse Button:", font='Helvetica 12 bold')
+Label13.grid(row=0, column=0)
+
+Label14 = ttk.Label(frame6, text="Click Type:", font='Helvetica 12 bold')
+Label14.grid(row=1, column=0)
+
 # Creating the Buttons
 Button1 = Button(frame1, text="Task Mgr", padx=5, pady=5, width=8, height=1, command=taskmgr)
 Button1.grid(row=2, column=0, sticky='ew')
@@ -434,10 +467,30 @@ Button17 = Button(frame3, text="Get HWID", width=8, height=1, command=show_gpu_s
 Button17.grid(row=2, column=0, columnspan=1, padx=5, pady=3, sticky='w')
 
 Button18 = Button(frame5, text="DONT CLICK ME!!!", command=dontclick)
-Button18.grid(row=3, column=3, sticky='w')
+Button18.grid(row=3, column=0, sticky='w')
+
+Button19 = Button(frame8, text="Start(F2)", font='Helvetica 14', width=10, height=2, pady=10, command=StartClicker)
+Button19.grid(row=0, column=0, sticky='w')
+
+Button19 = Button(frame8, text="Start(F3)", font='Helvetica 14', width=10, height=2, pady=10, command=StopClicker)
+Button19.grid(row=0, column=1, sticky='w')
+
+Button20 = Button(frame8, text="Hotkey Settings", font='Helvetica 14', height=2, pady=10, padx=30, command=Hotkeys)
+Button20.grid(row=0, column=2)
 
 generate_pw_button = Button(frame2, text="Generate PW", padx=5, pady=5, width=8, height=1, command=generate_password)
 generate_pw_button.grid(row=5, column=0, columnspan=3, sticky='nsew')
+
+# Creating Radio Buttons
+rButton = Radiobutton(frame7, text="Repeat", variable=RepeatOps, value=1, font='Helvetica 12 bold')
+rButton.grid(row=0, column=0, pady=15, sticky='w')
+
+rButton1 = Radiobutton(frame7, text="Repeat until stopped", variable=RepeatOps, value=2, font='Helvetica 12 bold')
+rButton1.grid(row=1, column=0, pady=20, sticky='w')
+
+# Creating Entry Boxes
+entry_box = tk.Entry(frame7)
+entry_box.grid(row=0, column=0, padx=100, sticky='w')
 
 # Creating Text Boxes
 text_box = tk.Text(frame2, height=10, width=27)
@@ -462,6 +515,12 @@ drop3.grid(row=0, column=1, sticky='w')
 drop4 = OptionMenu(frame4, IntervalMenu3, *times)
 drop4.grid(row=1, column=1, sticky='w')
 
+drop5 = OptionMenu(frame6, ClickMenu, *Clickops)
+drop5.grid(row=0, column=1, padx=20, pady=15, sticky='w')
+
+drop6 = OptionMenu(frame6, ClickType, *Clickops1)
+drop6.grid(row=1, column=1, padx=20, pady=15, sticky='w')
+
 frame1.grid_columnconfigure(0, weight=1)
 frame1.grid_columnconfigure(1, weight=1)
 frame1.grid_columnconfigure(2, weight=1)
@@ -475,5 +534,6 @@ frame4.grid_columnconfigure(0, weight=1)
 frame4.grid_columnconfigure(1, weight=1)
 frame4.grid_columnconfigure(2, weight=1)
 frame4.grid_columnconfigure(3, weight=1)
+frame7.grid_columnconfigure(1, weight=1)
 
 root.mainloop()
