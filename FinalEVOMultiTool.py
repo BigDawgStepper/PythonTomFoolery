@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from winsound import *
 import tkinter as tk
 import tkinter.messagebox
 import os
@@ -8,7 +9,8 @@ import subprocess
 import time
 import random
 import string
-from winsound import *
+import pyautogui
+import keyboard
 
 def chargen16(length=16, include_uppercase=True, include_digits=True, include_special_chars=True):
     if length < 8:  # Minimum length for a reasonable password
@@ -288,13 +290,24 @@ def dontclick():
     PlaySound('C:\\Users\\eac\\Downloads\\danger-alarm-sound-effect.wav', SND_FILENAME)
     tkinter.messagebox.showinfo(title="Told you not to", message="You had multiple chances to not click it and u still did smh")
 
+def AutoClick():
+    return 0
+
 def StartClicker():
     return 0
 
 def StopClicker():
     return 0
 
-def Hotkeys():
+def disable_keybind_mode():
+    HotkeyMenu.unbind('<KeyPress>')
+    button1.config(state=tk.NORMAL)
+    button2.config(state=tk.NORMAL)
+    
+def RepeatTimes():
+    return 0
+
+def ClickInterval():
     return 0
 
 # Setting all the default GUI settings
@@ -322,6 +335,97 @@ ClickType = StringVar()
 ClickType.set(Clickops1[0])
 RepeatOps = IntVar()
 RepeatOps.set([2])
+interval = IntVar()
+
+# Global Variables
+current_keybind_start = None
+current_keybind_stop = None
+
+def on_key_press(event, button_id):
+    """Capture the key press and update the keybinding."""
+    new_key = event.keysym
+    status_label.config(text=f'Keybind updated to: {new_key} for Button {button_id}')
+    
+    # Update global keybind variables and labels
+    global current_keybind_start, current_keybind_stop
+    if button_id == 19:
+        if hasattr(on_key_press, 'current_key19'):
+            HotkeyMenu.unbind(f'<{on_key_press.current_key19}>')
+        HotkeyMenu.bind(f'<{new_key}>', lambda event: trigger_action(event, 19))
+        current_keybind_start = new_key
+        start_keybind_label.config(text=f"Start Keybind: {new_key}")
+        on_key_press.current_key19 = new_key
+    elif button_id == 20:
+        if hasattr(on_key_press, 'current_key20'):
+            HotkeyMenu.unbind(f'<{on_key_press.current_key20}>')
+        HotkeyMenu.bind(f'<{new_key}>', lambda event: trigger_action(event, 20))
+        current_keybind_stop = new_key
+        stop_keybind_label.config(text=f"Stop Keybind: {new_key}")
+        on_key_press.current_key20 = new_key
+    disable_keybind_mode()
+
+def trigger_action(event, button_id):
+    if button_id == 19:
+        print("Button 19 action triggered")
+    elif button_id == 20:
+        print("Button 20 action triggered")
+    status_label.config(text=f'Action triggered by key: {event.keysym} for Button {button_id}')
+
+def enable_keybind_mode(button_id):
+    status_label.config(text=f"Press any key to set as the keybind for Button {button_id}")
+    HotkeyMenu.bind('<KeyPress>', lambda event: on_key_press(event, button_id))
+    button1.config(state=tk.DISABLED)
+    button2.config(state=tk.DISABLED)
+
+def trigger_action(event, button_id):
+    if button_id == 19:
+        print("Button 19 action triggered")
+    elif button_id == 20:
+        print("Button 20 action triggered")
+    status_label.config(text=f'Action triggered by key: {event.keysym} for Button {button_id}')
+
+def open_HotkeyMenu():
+    global HotkeyMenu, status_label, button1, button2, start_keybind_label, stop_keybind_label
+    # Creating main GUI for the hotkey menu
+    HotkeyMenu = tk.Tk()
+    HotkeyMenu.title("Auto Clicker Hotkey Menu")
+    HotkeyMenu.geometry("390x375")
+    HotkeyMenu.resizable(False, False)
+    HotkeyMenu.iconbitmap('C:\\Users\\eac\\Desktop\\Big hacker things\\icons\\multi-tool.ico')
+
+    # Creating Notebook for HotkeyMenu
+    my_notebook = ttk.Notebook(HotkeyMenu)
+    my_notebook.pack(expand=1, fill='both')
+
+    # Creating tabs for HotkeyMenu
+    my_tab = ttk.Frame(my_notebook)
+    my_notebook.add(my_tab, text="Hotkeys")
+
+    # Creating frames for HotkeyMenu
+    frame = tk.LabelFrame(my_tab, text="Hotkeys", width=387, height=370)
+    frame.grid_propagate(False)
+    frame.grid(row=0, column=0)
+
+    # Creating Labels for HotkeyMenu
+    status_label = tk.Label(frame, text="Press the button to set a keybind", font='Helvetica 12 bold')
+    status_label.grid(row=0, column=0, columnspan=2, pady=10)
+
+    # Labels to show current keybinds
+    start_keybind_label = tk.Label(frame, text=f"Start Keybind: {current_keybind_start if current_keybind_start else 'None'}", font='Helvetica 12 bold')
+    start_keybind_label.grid(row=1, column=0, padx=10, pady=10)
+
+    stop_keybind_label = tk.Label(frame, text=f"Stop Keybind: {current_keybind_stop if current_keybind_stop else 'None'}", font='Helvetica 12 bold')
+    stop_keybind_label.grid(row=1, column=1, padx=10, pady=10)
+
+    # Creating Buttons to change keybinds
+    button1 = tk.Button(frame, text="Change Keybind for Start", command=lambda: enable_keybind_mode(19))
+    button1.grid(row=2, column=0, padx=10, pady=10)
+
+    button2 = tk.Button(frame, text="Change Keybind for Stop", command=lambda: enable_keybind_mode(20))
+    button2.grid(row=2, column=1, padx=10, pady=10)
+
+    # Start the HotkeyMenu mainloop
+    HotkeyMenu.mainloop()
 
 # Creating the notebook
 my_notebook = ttk.Notebook(root)
@@ -469,14 +573,14 @@ Button17.grid(row=2, column=0, columnspan=1, padx=5, pady=3, sticky='w')
 Button18 = Button(frame5, text="DONT CLICK ME!!!", command=dontclick)
 Button18.grid(row=3, column=0, sticky='w')
 
-Button19 = Button(frame8, text="Start(F2)", font='Helvetica 14', width=10, height=2, pady=10, command=StartClicker)
+Button19 = Button(frame8, text=f"Start ({current_keybind_start if current_keybind_start else ''})", font='Helvetica 14', width=10, height=2, pady=10, command=StartClicker)
 Button19.grid(row=0, column=0, sticky='w')
 
-Button19 = Button(frame8, text="Start(F3)", font='Helvetica 14', width=10, height=2, pady=10, command=StopClicker)
-Button19.grid(row=0, column=1, sticky='w')
+Button20 = Button(frame8, text=f"Stop ({current_keybind_stop if current_keybind_stop else ''})", font='Helvetica 14', width=10, height=2, pady=10, command=StopClicker)
+Button20.grid(row=0, column=1, sticky='w')
 
-Button20 = Button(frame8, text="Hotkey Settings", font='Helvetica 14', height=2, pady=10, padx=30, command=Hotkeys)
-Button20.grid(row=0, column=2)
+Button21 = Button(frame8, text="Hotkey Settings", font='Helvetica 14', height=2, pady=10, padx=30, command=open_HotkeyMenu)
+Button21.grid(row=0, column=2)
 
 generate_pw_button = Button(frame2, text="Generate PW", padx=5, pady=5, width=8, height=1, command=generate_password)
 generate_pw_button.grid(row=5, column=0, columnspan=3, sticky='nsew')
@@ -521,6 +625,7 @@ drop5.grid(row=0, column=1, padx=20, pady=15, sticky='w')
 drop6 = OptionMenu(frame6, ClickType, *Clickops1)
 drop6.grid(row=1, column=1, padx=20, pady=15, sticky='w')
 
+# Configuring grids to keep widgets were they need to be
 frame1.grid_columnconfigure(0, weight=1)
 frame1.grid_columnconfigure(1, weight=1)
 frame1.grid_columnconfigure(2, weight=1)
@@ -536,4 +641,4 @@ frame4.grid_columnconfigure(2, weight=1)
 frame4.grid_columnconfigure(3, weight=1)
 frame7.grid_columnconfigure(1, weight=1)
 
-root.mainloop()
+mainloop()
