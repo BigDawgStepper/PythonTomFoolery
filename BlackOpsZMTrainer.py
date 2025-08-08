@@ -10,6 +10,7 @@ import time
 PROCESS_ALL_ACCESS = 0x1F0FFF
 
 godThread = None
+infiniteAmmoThread = None
 
 def memoryHelper():
     procName = "BlackOps.exe"
@@ -35,42 +36,7 @@ def memoryHelper():
         messagebox.showinfo("Success", "BlackOps.exe successfully opened.")
         return handle
 
-def infPrimaryAmmo():
-    handle = memoryHelper()
-    primaryAmmoAddress = 0x1C08F10
-    ammoAmnt = 999
-
-    if handle is None:
-        messagebox.showerror("Error", "BlackOps.exe not found.")
-        return
-    
-
-def infSecondaryAmmo():
-    handle = memoryHelper()
-    ammoAddress = 0x1C08F00
-    ammoAmnt = 999
-
-    if handle is None:
-        messagebox.showerror("Error", "Failed to open process. Run as admin.")
-        return
-
-    while infSecondaryAmmoToggled.get():
-        data = struct.pack("<i", ammoAmnt)
-
-        bytes_written = ctypes.c_size_t(0)
-        success = ctypes.windll.kernel32.WriteProcessMemory(
-            handle,
-            ammoAddress,
-            data,
-            len(data),
-            ctypes.byref(bytes_written),
-        )
-        time.sleep(0.1)
-
-    ctypes.windll.kernel32.CloseHandle(handle)
-    messagebox.showinfo("Trainer", "Infinite secondary ammo toggled off")
-
-def removeReload():
+def infiniteAmmo():
     handle = memoryHelper()
     secondaryAmmoAddress = 0x1C08F00
     primaryAmmoAddress = 0x1C08F10
@@ -80,8 +46,8 @@ def removeReload():
         messagebox.showerror("Error", "Failed to open process. Run as admin.")
         return
 
-    while removeReloadToggled.get():
-        data = struct.pack("<i", 0)
+    while infiniteAmmoToggled.get():
+        data = struct.pack("<i", ammoAmnt)
 
         bytes_written = ctypes.c_size_t(0)
         ctypes.windll.kernel32.WriteProcessMemory(
@@ -102,6 +68,17 @@ def removeReload():
 
         time.sleep(0.1)
 
+    ctypes.windll.kernel32.CloseHandle(handle)
+    messagebox.showinfo("Trainer", "Infinite Ammo toggled off")
+
+def onInfiniteAmmoToggle():
+    global infiniteAmmoThread
+    if infiniteAmmoToggled.get():
+        if infiniteAmmoThread is None or not infiniteAmmoThread.is_alive():
+            infiniteAmmoThread = threading.Thread(target=infiniteAmmo, daemon=True)
+            infiniteAmmoThread.start()
+    else:
+        pass
 
 def godMode():
     handle = memoryHelper()
@@ -216,23 +193,12 @@ aimSmoothingSlider.grid(column=1, row=2)
 weaponFrame = ttk.Frame(notebook)
 notebook.add(weaponFrame, text="Weapon")
 
-infinitePrimaryAmmoLabel = ttk.Label(weaponFrame, text="Infinite Primary Ammo")
-infinitePrimaryAmmoLabel.grid(column=0, row=0)
-infPrimaryAmmoToggled = tk.IntVar()
-infinitePrimaryAmmoCheckBox = ttk.Checkbutton(weaponFrame, variable=infPrimaryAmmoToggled)
-infinitePrimaryAmmoCheckBox.grid(column=1, row=0)
-
-infiniteSecondaryAmmo = ttk.Label(weaponFrame, text="Infinite Secondary Ammo")
-infiniteSecondaryAmmo.grid(column=0, row=1)
-infSecondaryAmmoToggled = tk.IntVar()
-infiniteSecondaryAmmoCheckBox = ttk.Checkbutton(weaponFrame, variable=infSecondaryAmmoToggled)
-infiniteSecondaryAmmoCheckBox.grid(column=1, row=1)
-
-removeReloadLabel = ttk.Label(weaponFrame, text="No reload")
-removeReloadLabel.grid(column=0, row=2)
-removeReloadToggled = tk.IntVar()
-removeReloadCheckBox = ttk.Checkbutton(weaponFrame, variable=removeReloadToggled)
-removeReloadCheckBox.grid(column=1, row=2)
+infiniteAmmoLabel = ttk.Label(weaponFrame, text="Infinite Ammo")
+infiniteAmmoLabel.grid(column=0, row=2)
+infiniteAmmoToggled = tk.IntVar()
+infiniteAmmoCheckBox = ttk.Checkbutton(weaponFrame, variable=infiniteAmmoToggled)
+infiniteAmmoCheckBox.grid(column=1, row=2)
+infiniteAmmoCheckBox.config(command=onInfiniteAmmoToggle)
 
 ## Misc Frame
 miscFrame = ttk.Frame(notebook)
